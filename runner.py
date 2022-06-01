@@ -24,7 +24,6 @@ with st.spinner('Analyze sentiment....'):
     r = sentiment_pipeline(input, truncation=True)
 
   
-@st.cache(hash_funcs={transformers.models.gpt2.tokenization_gpt2_fast.GPT2TokenizerFast: hash}, suppress_st_warning=True)
 def load_data():    
  #tokenizer = AutoTokenizer.from_pretrained('kakaobrain/kogpt', revision='KoGPT6B-ryan1.5b', bos_token='[BOS]', eos_token='[EOS]', unk_token='[UNK]', pad_token='[PAD]', mask_token='[MASK]')
  #model = AutoModelForCausalLM.from_pretrained('kakaobrain/kogpt', revision='KoGPT6B-ryan1.5b', pad_token_id=tokenizer.eos_token_id, torch_dtype=torch.float16, low_cpu_mem_usage=True)
