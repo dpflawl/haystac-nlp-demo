@@ -6,7 +6,7 @@ with st.sidebar:
     st.image('logo.png')
     # st.title("Haystac NLP Demos")
     st.subheader("Pipelines:")
-    sentiment_analysis_flag = st.checkbox("Sentiment Analysis", True)
+    sentiment_analysis_flag = st.checkbox("Sentiment Analysis", False)
     zero_shot_classification_flag = st.checkbox("Zero Shot Classification", False)
     summarization_flag = st.checkbox("Summarization", True)
 
