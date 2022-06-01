@@ -3,6 +3,7 @@ from transformers import pipeline
 import pandas as pd
 import transformers
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
 
 
 @st.cache(hash_funcs={transformers.models.gpt2.tokenization_gpt2_fast.GPT2TokenizerFast: hash}, suppress_st_warning=True)
