@@ -7,7 +7,7 @@ with st.sidebar:
     # st.title("Haystac NLP Demos")
     st.subheader("Pipelines:")
     sentiment_analysis_flag = st.checkbox("Sentiment Analysis", True)
-    zero_shot_classification_flag = st.checkbox("Zero Shot Classification", True)
+    zero_shot_classification_flag = st.checkbox("Zero Shot Classification", False)
     summarization_flag = st.checkbox("Summarization", True)
 
     if zero_shot_classification_flag:
