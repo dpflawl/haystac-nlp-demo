@@ -6,16 +6,6 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
 
-@st.cache(hash_funcs={transformers.models.gpt2.tokenization_gpt2_fast.GPT2TokenizerFast: hash}, suppress_st_warning=True)
-def load_data():    
- #tokenizer = AutoTokenizer.from_pretrained('kakaobrain/kogpt', revision='KoGPT6B-ryan1.5b', bos_token='[BOS]', eos_token='[EOS]', unk_token='[UNK]', pad_token='[PAD]', mask_token='[MASK]')
- #model = AutoModelForCausalLM.from_pretrained('kakaobrain/kogpt', revision='KoGPT6B-ryan1.5b', pad_token_id=tokenizer.eos_token_id, torch_dtype=torch.float16, low_cpu_mem_usage=True)
- tokenizer = AutoTokenizer.from_pretrained('kakaobrain/kogpt', revision='KoGPT6B-ryan1.5b')
- model = AutoModelForCausalLM.from_pretrained('kakaobrain/kogpt', revision='KoGPT6B-ryan1.5b')
- return tokenizer, model
- 
-tokenizer, model = load_data()
-
 with st.sidebar:
     st.title("챗봇 & 문장 감정 분석 서비스")
 
@@ -34,6 +24,16 @@ with st.spinner('Analyze sentiment....'):
     r = sentiment_pipeline(input, truncation=True)
 
   
+@st.cache(hash_funcs={transformers.models.gpt2.tokenization_gpt2_fast.GPT2TokenizerFast: hash}, suppress_st_warning=True)
+def load_data():    
+ #tokenizer = AutoTokenizer.from_pretrained('kakaobrain/kogpt', revision='KoGPT6B-ryan1.5b', bos_token='[BOS]', eos_token='[EOS]', unk_token='[UNK]', pad_token='[PAD]', mask_token='[MASK]')
+ #model = AutoModelForCausalLM.from_pretrained('kakaobrain/kogpt', revision='KoGPT6B-ryan1.5b', pad_token_id=tokenizer.eos_token_id, torch_dtype=torch.float16, low_cpu_mem_usage=True)
+ tokenizer = AutoTokenizer.from_pretrained('kakaobrain/kogpt')
+ model = AutoModelForCausalLM.from_pretrained('kakaobrain/kogpt')
+ return tokenizer, model
+ 
+tokenizer, model = load_data()
+
 if 'count' not in st.session_state or st.session_state.count == 6:
  st.session_state.count = 0 
  st.session_state.chat_history_ids = None
