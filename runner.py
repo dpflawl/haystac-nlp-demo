@@ -31,7 +31,7 @@ with st.spinner('Analyze sentiment....'):
     r = sentiment_pipeline(input, truncation=True)
 
   
- if 'count' not in st.session_state or st.session_state.count == 6:
+if 'count' not in st.session_state or st.session_state.count == 6:
  st.session_state.count = 0 
  st.session_state.chat_history_ids = None
  st.session_state.old_response = ''
@@ -48,11 +48,11 @@ st.session_state.chat_history_ids = model.generate(bot_input_ids, max_length=500
 response = tokenizer.decode(st.session_state.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
 
 if st.session_state.old_response == response:
-   bot_input_ids = new_user_input_ids
- 
-   st.session_state.chat_history_ids = model.generate(bot_input_ids, max_length=5000, pad_token_id=tokenizer.eos_token_id) 
+  bot_input_ids = new_user_input_ids
 
-   response = tokenizer.decode(st.session_state.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
+  st.session_state.chat_history_ids = model.generate(bot_input_ids, max_length=5000, pad_token_id=tokenizer.eos_token_id) 
+
+  response = tokenizer.decode(st.session_state.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
 
 st.subheader('챗봇 답변')
 st.write(f"Chatbot: {response}")
