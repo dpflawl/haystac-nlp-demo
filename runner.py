@@ -1,6 +1,18 @@
 import streamlit as st
 from transformers import pipeline
 import pandas as pd
+import transformers
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+
+
+@st.cache(hash_funcs={transformers.models.gpt2.tokenization_gpt2_fast.GPT2TokenizerFast: hash}, suppress_st_warning=True)
+def load_data():    
+ tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium")
+ model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-medium")
+ return tokenizer, model
+ 
+tokenizer, model = load_data()
 
 with st.sidebar:
     st.title("문장 감정 분석기")
