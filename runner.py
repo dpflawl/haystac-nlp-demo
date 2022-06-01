@@ -3,9 +3,7 @@ from transformers import pipeline
 import pandas as pd
 
 with st.sidebar:
-    st.image('logo.png')
-    # st.title("Haystac NLP Demos")
-    st.subheader("Pipelines:")
+    st.title("문장 감정 분석기")
 
 @st.cache(allow_output_mutation=True, show_spinner=False)
 def get_sentiment_analysis_model():
