@@ -2,7 +2,7 @@ import streamlit as st
 from transformers import pipeline
 import pandas as pd
 import transformers
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelWithLMHead, AutoTokenizer
 
 
 @st.cache(hash_funcs={transformers.models.gpt2.tokenization_gpt2_fast.GPT2TokenizerFast: hash}, suppress_st_warning=True)
