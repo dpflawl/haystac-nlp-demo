@@ -20,14 +20,13 @@ if 'count' not in st.session_state or st.session_state.count == 6:
 else:
  st.session_state.count += 1
 
-
 tokenizer = PreTrainedTokenizerFast.from_pretrained("skt/kogpt2-base-v2",
   bos_token='</s>', eos_token='</s>', unk_token='<unk>',
   pad_token='<pad>', mask_token='<mask>')
 model = GPT2LMHeadModel.from_pretrained('skt/kogpt2-base-v2')
 
 with torch.no_grad():
-    new_user_input_ids = tokenizer.encode(input, return_tensors='pt')
+    new_user_input_ids = tokenizer.encode(input + tokenizer.eos_token, return_tensors='pt')
     bot_input_ids = torch.cat([st.session_state.chat_history_ids, new_user_input_ids], dim=-1) if st.session_state.count > 1 else new_user_input_ids
     st.session_state.chat_history_ids = model.generate(bot_input_ids, max_length=5000, pad_token_id=tokenizer.eos_token_id)
 
