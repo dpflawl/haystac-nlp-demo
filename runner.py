@@ -7,11 +7,30 @@ import pandas as pd
 from transformers import GPT2LMHeadModel
 import torch
 
+st.set_page_config(
+    page_title="Streamlit Chat - Demo",
+    page_icon=":robot:"
+)
+
+API_URL = "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill"
+headers = {"Authorization": st.secrets['api_key']}
 
 with st.sidebar:
-    st.title("감정 모델 기반의 챗봇 👾")
+    st.title("감정 모델 기반의 챗봇과 대화해보세요. 👾")
+    
+if 'generated' not in st.session_state:
+    st.session_state['generated'] = []
 
-input = st.text_input('입력:')
+if 'past' not in st.session_state:
+    st.session_state['past'] = []
+
+def get_text():
+    input_text = st.text_input("You: ","안녕하세요, 반가워요.", key="input")
+    return input_text 
+
+#input = st.text_input('입력:')
+use_input = get_text()
+
 
 if 'count' not in st.session_state or st.session_state.count == 6:
  st.session_state.count = 0 
@@ -20,33 +39,42 @@ if 'count' not in st.session_state or st.session_state.count == 6:
 else:
  st.session_state.count += 1
 
-tokenizer = PreTrainedTokenizerFast.from_pretrained("skt/kogpt2-base-v2",
-  bos_token='</s>', eos_token='</s>', unk_token='<unk>',
-  pad_token='<pad>', mask_token='<mask>')
-model = GPT2LMHeadModel.from_pretrained('skt/kogpt2-base-v2')
+if user_input:
+    tokenizer = PreTrainedTokenizerFast.from_pretrained("skt/kogpt2-base-v2",
+      bos_token='</s>', eos_token='</s>', unk_token='<unk>',
+      pad_token='<pad>', mask_token='<mask>')
+    model = GPT2LMHeadModel.from_pretrained('skt/kogpt2-base-v2')
 
-with torch.no_grad():
-    new_user_input_ids = tokenizer.encode(input + tokenizer.eos_token, return_tensors='pt')
-    bot_input_ids = torch.cat([st.session_state.chat_history_ids, new_user_input_ids], dim=-1) if st.session_state.count > 1 else new_user_input_ids
-    st.session_state.chat_history_ids = gen_ids = model.generate(bot_input_ids,
-                                                                max_length=128,
-                                                                repetition_penalty=2.0,
-                                                                pad_token_id=tokenizer.pad_token_id,
-                                                                eos_token_id=tokenizer.eos_token_id,
-                                                                bos_token_id=tokenizer.bos_token_id,
-                                                                use_cache=True)
-    #st.session_state.chat_history_ids = model.generate(bot_input_ids, max_length=5000, pad_token_id=tokenizer.eos_token_id)
+    with torch.no_grad():
+        new_user_input_ids = tokenizer.encode(use_input + tokenizer.eos_token, return_tensors='pt')
+        bot_input_ids = torch.cat([st.session_state.chat_history_ids, new_user_input_ids], dim=-1) if st.session_state.count > 1 else new_user_input_ids
+        st.session_state.chat_history_ids = gen_ids = model.generate(bot_input_ids,
+                                                                    max_length=128,
+                                                                    repetition_penalty=2.0,
+                                                                    pad_token_id=tokenizer.pad_token_id,
+                                                                    eos_token_id=tokenizer.eos_token_id,
+                                                                    bos_token_id=tokenizer.bos_token_id,
+                                                                    use_cache=True)
+        #st.session_state.chat_history_ids = model.generate(bot_input_ids, max_length=5000, pad_token_id=tokenizer.eos_token_id)
 
-    response = tokenizer.decode(st.session_state.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
+        response = tokenizer.decode(st.session_state.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
+        
+        st.session_state.past.append(user_input)
+        st.session_state.generated.append(response)
 
 if st.session_state.old_response == response:
   bot_input_ids = new_user_input_ids
   st.session_state.chat_history_ids = model.generate(bot_input_ids, max_length=5000, pad_token_id=tokenizer.eos_token_id) 
   response = tokenizer.decode(st.session_state.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
 
-st.subheader('챗봇 답변')
-st.write(f"Chatbot: {response}")
-st.session_state.old_response = response 
+if st.session_state['generated']:
+    for i in range(len(st.session_state['generated'])-1, -1, -1):
+        st.session_state["generated"][i], key=str(i)
+        st.session_state['past'][i], is_user=True, key=str(i) + '_user'
+
+#st.subheader('챗봇 답변')
+#st.write(f"Chatbot: {response}")
+#st.session_state.old_response = response 
   
   
 #st.subheader('감정 분석 결과')
