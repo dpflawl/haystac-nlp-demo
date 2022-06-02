@@ -18,10 +18,10 @@ user_input = get_text()
 
 if 'generated' not in st.session_state:
     st.session_state['generated'] = []
-
+    st.session_state.chat_history_ids = None
+    
 if 'past' not in st.session_state:
     st.session_state['past'] = []
-    st.session_state.chat_history_ids = None
 
 if user_input:
     tokenizer = PreTrainedTokenizerFast.from_pretrained("skt/kogpt2-base-v2",
