@@ -18,7 +18,6 @@ user_input = get_text()
 
 if 'generated' not in st.session_state:
     st.session_state['generated'] = []
-    st.session_state.chat_history_ids = None
 
 if 'past' not in st.session_state:
     st.session_state['past'] = []
