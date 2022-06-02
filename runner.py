@@ -11,9 +11,7 @@ import torch
 with st.sidebar:
     st.title("챗봇 & 문장 감정 분석 서비스")
 
-input = st.text_area('입력', '''
-     안녕하세요. 반갑습니다.
-     ''')
+input = st.text_input('입력:')
 
 if 'count' not in st.session_state or st.session_state.count == 6:
  st.session_state.count = 0 
