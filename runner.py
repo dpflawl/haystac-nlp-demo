@@ -7,13 +7,6 @@ import pandas as pd
 from transformers import GPT2LMHeadModel
 import torch
 
-st.set_page_config(
-    page_title="Streamlit Chat - Demo",
-    page_icon=":robot:"
-)
-
-API_URL = "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill"
-headers = {"Authorization": st.secrets['api_key']}
 
 with st.sidebar:
     st.title("감정 모델 기반의 챗봇과 대화해보세요. 👾")
