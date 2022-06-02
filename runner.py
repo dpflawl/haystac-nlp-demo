@@ -9,7 +9,7 @@ import torch
 
 
 with st.sidebar:
-    st.title("챗봇 & 문장 감정 분석 서비스")
+    st.title("감정 모델 기반의 챗봇 👾")
 
 input = st.text_input('입력:')
 
