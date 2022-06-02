@@ -38,7 +38,7 @@ if user_input:
                                                             eos_token_id=tokenizer.eos_token_id,
                                                             bos_token_id=tokenizer.bos_token_id,
                                                             use_cache=True)
-        response = tokenizer.decode(st.session_state.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)       
+        response = tokenizer.decode(st.session_state.chat_history_ids[:, new_user_input_ids.shape[-1]:][0], skip_special_tokens=True)       
         st.session_state.past.append(user_input)
         st.session_state.generated.append(response)
 
