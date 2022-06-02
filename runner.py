@@ -14,7 +14,7 @@ def get_text():
     input_text = st.text_input("You: ","안녕하세요, 반가워요.", key="input")
     return input_text 
 
-use_input = get_text()
+user_input = get_text()
 
 if 'generated' not in st.session_state:
     st.session_state['generated'] = []
