@@ -11,26 +11,17 @@ import torch
 with st.sidebar:
     st.title("감정 모델 기반의 챗봇과 대화해보세요. 👾")
     
+def get_text():
+    input_text = st.text_input("You: ","안녕하세요, 반가워요.", key="input")
+    return input_text 
+
+use_input = get_text()
+
 if 'generated' not in st.session_state:
     st.session_state['generated'] = []
 
 if 'past' not in st.session_state:
     st.session_state['past'] = []
-
-def get_text():
-    input_text = st.text_input("You: ","안녕하세요, 반가워요.", key="input")
-    return input_text 
-
-#input = st.text_input('입력:')
-use_input = get_text()
-
-
-if 'count' not in st.session_state or st.session_state.count == 6:
- st.session_state.count = 0 
- st.session_state.chat_history_ids = None
- st.session_state.old_response = ''
-else:
- st.session_state.count += 1
 
 if user_input:
     tokenizer = PreTrainedTokenizerFast.from_pretrained("skt/kogpt2-base-v2",
@@ -48,22 +39,14 @@ if user_input:
                                                                     eos_token_id=tokenizer.eos_token_id,
                                                                     bos_token_id=tokenizer.bos_token_id,
                                                                     use_cache=True)
-        #st.session_state.chat_history_ids = model.generate(bot_input_ids, max_length=5000, pad_token_id=tokenizer.eos_token_id)
-
-        response = tokenizer.decode(st.session_state.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
-        
+        response = tokenizer.decode(st.session_state.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)       
         st.session_state.past.append(user_input)
         st.session_state.generated.append(response)
 
-if st.session_state.old_response == response:
-  bot_input_ids = new_user_input_ids
-  st.session_state.chat_history_ids = model.generate(bot_input_ids, max_length=5000, pad_token_id=tokenizer.eos_token_id) 
-  response = tokenizer.decode(st.session_state.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
-
 if st.session_state['generated']:
     for i in range(len(st.session_state['generated'])-1, -1, -1):
-        st.session_state["generated"][i], key=str(i)
-        st.session_state['past'][i], is_user=True, key=str(i) + '_user'
+        st.write(st.session_state["generated"][i], key=str(i))
+        st.writest.session_state['past'][i], is_user=True, key=str(i) + '_user')
 
 #st.subheader('챗봇 답변')
 #st.write(f"Chatbot: {response}")
