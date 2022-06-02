@@ -1,8 +1,10 @@
 import streamlit as st
-from transformers import pipeline
-import pandas as pd
 import transformers
-from transformers import AutoModelForCausalLM, AutoTokenizer
+#from transformers import pipeline
+from transformers import PreTrainedTokenizerFast
+import pandas as pd
+#from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import GPT2LMHeadModel
 import torch
 
 
@@ -21,13 +23,10 @@ else:
  st.session_state.count += 1
 
 
-tokenizer = AutoTokenizer.from_pretrained(
-  'kakaobrain/kogpt', revision='KoGPT6B-ryan1.5b-float16',
-  bos_token='[BOS]', eos_token='[EOS]', unk_token='[UNK]', pad_token='[PAD]', mask_token='[MASK]')
-model = AutoModelForCausalLM.from_pretrained(
-  'kakaobrain/kogpt', revision='KoGPT6B-ryan1.5b-float16',
-  pad_token_id=tokenizer.eos_token_id,
-  torch_dtype=torch.float16, low_cpu_mem_usage=True)
+tokenizer = PreTrainedTokenizerFast.from_pretrained("skt/kogpt2-base-v2",
+  bos_token='</s>', eos_token='</s>', unk_token='<unk>',
+  pad_token='<pad>', mask_token='<mask>')
+model = GPT2LMHeadModel.from_pretrained('skt/kogpt2-base-v2')
 
 with torch.no_grad():
     new_user_input_ids = tokenizer.encode(input + tokenizer.eos_token, return_tensors='pt')
