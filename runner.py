@@ -8,8 +8,7 @@ from transformers import GPT2LMHeadModel
 import torch
 
 
-with st.sidebar:
-    st.title("감정 모델 기반의 챗봇과 대화해보세요. 👾")
+st.title("감정 모델 기반의 챗봇과 대화해보세요. 👾")
     
 def get_text():
     input_text = st.text_input("You: ","안녕하세요, 반가워요.", key="input")
