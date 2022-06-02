@@ -6,6 +6,7 @@ import pandas as pd
 #from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import GPT2LMHeadModel
 import torch
+from streamlit_chat import message
 
 
 st.title("감정 모델 기반의 챗봇 서비스👾")
@@ -45,8 +46,8 @@ if user_input:
 
 if st.session_state['generated']:
     for i in range(len(st.session_state['generated'])-1, -1, -1):
-        st.write(st.session_state["generated"][i], key=str(i))
-        st.write(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
+        message(st.session_state["generated"][i], key=str(i))
+        message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
 
 #st.subheader('챗봇 답변')
 #st.write(f"Chatbot: {response}")
