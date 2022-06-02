@@ -45,8 +45,8 @@ if user_input:
 
 if st.session_state['generated']:
     for i in range(len(st.session_state['generated'])-1, -1, -1):
-        st.table(st.session_state["generated"][i], key=str(i))
-        st.table(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
+        st.write(st.session_state["generated"][i], key=str(i))
+        st.write(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
 
 #st.subheader('챗봇 답변')
 #st.write(f"Chatbot: {response}")
